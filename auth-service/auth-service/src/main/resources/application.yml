@@ -1,0 +1,54 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgresql://db.iynefsokhyvphbpzfhbx.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # 🚫 Auth service should NOT manage schema
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        default_schema: auth_schema   # ✅ THIS IS THE KEY LINE
+        format_sql: true
+        use_sql_comments: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+
+# 🔐 JWT (shared secret across services)
+jwt:
+  secret: ${JWT_SECRET}
+
+# 🌐 User Service (inter-service communication)
+user:
+  service:
+    url: ${USER_SERVICE_URL:http://localhost:8082}
+
+# 🪵 LOGGING
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.tool.schema: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    com.smartcommerce.auth: DEBUG

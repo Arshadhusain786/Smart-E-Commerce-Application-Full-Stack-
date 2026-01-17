@@ -1,0 +1,25 @@
+server:
+  port: 8082   # User Service
+
+spring:
+  datasource:
+    url: jdbc:postgresql://db.iynefsokhyvphbpzfhbx.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        hibernate:
+          default_schema: user_schema
+        format_sql: true
+
+  jackson:
+    serialization:
+      indent-output: true
+
+jwt:
+  secret: ${JWT_SECRET}

@@ -1,0 +1,35 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:postgresql://db.iynefsokhyvphbpzfhbx.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: ${DB_PASSWORD}  # Loaded from environment variable
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        hibernate:
+          default_schema: product_schema
+
+        format_sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: ${JWT_SECRET}
+
+logging:
+  level:
+    root: INFO
+    com.smartcommerce.product: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,50 @@
+server:
+  port: 8084   # Order Service port
+
+spring:
+  application:
+    name: order-service
+
+  datasource:
+    url: jdbc:postgresql://db.iynefsokhyvphbpzfhbx.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate       # ✅ Order service OWNS its schema
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: order_schema   # ⭐ IMPORTANT
+        format_sql: true
+        use_sql_comments: true
+
+  # (Kafka will be enabled later – placeholder)
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+# 🔐 JWT (must be SAME as Auth Service)
+jwt:
+  secret: ${JWT_SECRET}
+
+product:
+  service:
+    url: http://localhost:8083
+
+user:
+  service:
+    url: http://localhost:8082
+# 🌐 Inter-service URLs
+
+
+# 🪵 Logging (debug-friendly)
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.security: DEBUG
+    com.smartcommerce.order: DEBUG
